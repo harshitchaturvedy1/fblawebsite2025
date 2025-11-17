@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — HoloClass</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">HoloClass</a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="resources.html">Resources</a>
+        <a href="schedule.html">Peer Tutoring</a>
+        <a href="dashboard.html">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container">
+      <div class="dashboard-header">
+        <div>
+          <h1>Your Dashboard</h1>
+          <p class="muted">Keep track of lessons, link resources, and store your weekly schedule.</p>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dashboard-card">
+          <div class="card-header">
+            <div class="card-icon">🔗</div>
+            <h2>Quick Links</h2>
+          </div>
+          <div class="links-grid">
+            <a href="https://harshitchaturvedy1.github.io/holoclass" target="_blank" rel="noopener" class="link-item">
+              <span class="link-emoji">🎯</span>
+              <div>
+                <strong>HoloClass</strong>
+                <small>AR Lesson Library</small>
+              </div>
+            </a>
+            <a href="https://www.khanacademy.org" target="_blank" rel="noopener" class="link-item">
+              <span class="link-emoji">📖</span>
+              <div>
+                <strong>Khan Academy</strong>
+                <small>Video Tutorials</small>
+              </div>
+            </a>
+            <a href="resources.html" class="link-item">
+              <span class="link-emoji">📚</span>
+              <div>
+                <strong>Resources</strong>
+                <small>Study Materials</small>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="dashboard-card schedule-card">
+          <div class="card-header">
+            <div class="card-icon">📅</div>
+            <h2>My Weekly Schedule</h2>
+          </div>
+          <form id="scheduleForm">
+            <div class="schedule-input-group">
+              <label>
+                <span class="day-label">Monday</span>
+                <input name="monday" placeholder="e.g. Math 3:15-3:45" />
+              </label>
+              <label>
+                <span class="day-label">Tuesday</span>
+                <input name="tuesday" placeholder="" />
+              </label>
+              <label>
+                <span class="day-label">Wednesday</span>
+                <input name="wednesday" placeholder="" />
+              </label>
+              <label>
+                <span class="day-label">Thursday</span>
+                <input name="thursday" placeholder="" />
+              </label>
+              <label>
+                <span class="day-label">Friday</span>
+                <input name="friday" placeholder="" />
+              </label>
+            </div>
+            <div class="form-row">
+              <button class="btn primary" type="submit">Save Schedule</button>
+              <button class="btn ghost" id="clearSchedule" type="button">Clear</button>
+            </div>
+          </form>
+
+          <div class="saved-schedule-section">
+            <h3>Saved Schedule</h3>
+            <div id="savedSchedule"></div>
+          </div>
+        </div>
+
+        <div class="dashboard-card notes-card">
+          <div class="card-header">
+            <div class="card-icon">📝</div>
+            <h2>Notes & Downloads</h2>
+          </div>
+          <p class="muted">Keep your most-used PDFs here.</p>
+          <ul id="notesList" class="notes-list"></ul>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>HoloClass Dashboard</strong>
+      </div>
+      <div>
+        <small>Local saves use browser LocalStorage</small>
+      </div>
+    </div>
+  </footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
