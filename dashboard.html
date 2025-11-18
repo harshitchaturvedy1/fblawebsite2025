@@ -9,12 +9,14 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="index.html">HoloClass</a>
+      <a class="logo" href="#">HoloClass</a>
       <nav class="main-nav">
-        <a href="index.html">Home</a>
-        <a href="resources.html">Resources</a>
-        <a href="schedule.html">Peer Tutoring</a>
-        <a href="dashboard.html">Dashboard</a>
+        <a href="#">Home</a>
+        <a href="#">Resources</a>
+        <a href="#">Peer Tutoring</a>
+        <a href="#">HoloClass</a>
+        <a href="#">ELA Analyzer</a>
+        <a href="#">Dashboard</a>
       </nav>
     </div>
   </header>
@@ -22,93 +24,82 @@
   <main>
     <section class="section container">
       <div class="dashboard-header">
-        <div>
-          <h1>Your Dashboard</h1>
-          <p class="muted">Keep track of lessons, link resources, and store your weekly schedule.</p>
-        </div>
+        <h1>Your Dashboard</h1>
+        <p class="muted">Quickly access links, track your schedule, take notes, and manage tasks.</p>
       </div>
 
       <div class="dashboard-grid">
+
+        <!-- Quick Links -->
         <div class="dashboard-card">
           <div class="card-header">
             <div class="card-icon">🔗</div>
             <h2>Quick Links</h2>
           </div>
           <div class="links-grid">
-            <a href="https://harshitchaturvedy1.github.io/holoclass" target="_blank" rel="noopener" class="link-item">
+            <a href="https://harshitchaturvedy1.github.io/holoclass" target="_blank" class="link-item">
               <span class="link-emoji">🎯</span>
-              <div>
-                <strong>HoloClass</strong>
-                <small>AR Lesson Library</small>
-              </div>
+              <div><strong>HoloClass</strong><small>AR Lesson Library</small></div>
             </a>
-            <a href="https://www.khanacademy.org" target="_blank" rel="noopener" class="link-item">
+            <a href="https://www.khanacademy.org" target="_blank" class="link-item">
               <span class="link-emoji">📖</span>
-              <div>
-                <strong>Khan Academy</strong>
-                <small>Video Tutorials</small>
-              </div>
+              <div><strong>Khan Academy</strong><small>Video Tutorials</small></div>
             </a>
-            <a href="resources.html" class="link-item">
+            <a href="#" class="link-item">
               <span class="link-emoji">📚</span>
-              <div>
-                <strong>Resources</strong>
-                <small>Study Materials</small>
-              </div>
+              <div><strong>Resources</strong><small>Study Materials</small></div>
             </a>
           </div>
         </div>
 
+        <!-- Weekly Schedule -->
         <div class="dashboard-card schedule-card">
           <div class="card-header">
             <div class="card-icon">📅</div>
-            <h2>My Weekly Schedule</h2>
+            <h2>Weekly Schedule</h2>
           </div>
           <form id="scheduleForm">
             <div class="schedule-input-group">
-              <label>
-                <span class="day-label">Monday</span>
-                <input name="monday" placeholder="e.g. Math 3:15-3:45" />
-              </label>
-              <label>
-                <span class="day-label">Tuesday</span>
-                <input name="tuesday" placeholder="" />
-              </label>
-              <label>
-                <span class="day-label">Wednesday</span>
-                <input name="wednesday" placeholder="" />
-              </label>
-              <label>
-                <span class="day-label">Thursday</span>
-                <input name="thursday" placeholder="" />
-              </label>
-              <label>
-                <span class="day-label">Friday</span>
-                <input name="friday" placeholder="" />
-              </label>
+              <label>Monday<input name="monday" placeholder="Math 3:15-3:45"/></label>
+              <label>Tuesday<input name="tuesday"/></label>
+              <label>Wednesday<input name="wednesday"/></label>
+              <label>Thursday<input name="thursday"/></label>
+              <label>Friday<input name="friday"/></label>
             </div>
             <div class="form-row">
               <button class="btn primary" type="submit">Save Schedule</button>
-              <button class="btn ghost" id="clearSchedule" type="button">Clear</button>
+              <button class="btn ghost" type="button" id="clearSchedule">Clear</button>
             </div>
           </form>
-
           <div class="saved-schedule-section">
             <h3>Saved Schedule</h3>
             <div id="savedSchedule"></div>
           </div>
         </div>
 
+        <!-- Notes -->
         <div class="dashboard-card notes-card">
           <div class="card-header">
             <div class="card-icon">📝</div>
-            <h2>Notes & Downloads</h2>
+            <h2>Notes</h2>
           </div>
-          <p class="muted">Keep your most-used PDFs here.</p>
+          <input type="text" id="noteInput" placeholder="Add a note">
+          <button class="btn primary" id="addNote">Add Note</button>
           <ul id="notesList" class="notes-list"></ul>
         </div>
-      </div>
 
+        <!-- To-Do List -->
+        <div class="dashboard-card todo-card">
+          <div class="card-header">
+            <div class="card-icon">✅</div>
+            <h2>To-Do List</h2>
+          </div>
+          <input type="text" id="todoInput" placeholder="Add new task">
+          <button class="btn primary" id="addTodo">Add Task</button>
+          <ul id="todoList" class="todo-list"></ul>
+        </div>
+
+      </div>
     </section>
   </main>
 
@@ -123,6 +114,100 @@
     </div>
   </footer>
 
-<script src="assets/js/main.js"></script>
+  <script>
+    // ===== Schedule =====
+    const scheduleForm = document.getElementById('scheduleForm');
+    const savedScheduleDiv = document.getElementById('savedSchedule');
+    const clearBtn = document.getElementById('clearSchedule');
+
+    function loadSchedule() {
+      const data = JSON.parse(localStorage.getItem('schedule')) || {};
+      savedScheduleDiv.innerHTML = Object.keys(data).map(d => `<div><strong>${d}:</strong> ${data[d]}</div>`).join('');
+      Object.keys(data).forEach(day => {
+        const input = scheduleForm[day];
+        if(input) input.value = data[day];
+      });
+    }
+
+    scheduleForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = {};
+      ['monday','tuesday','wednesday','thursday','friday'].forEach(day => {
+        data[day] = scheduleForm[day].value;
+      });
+      localStorage.setItem('schedule', JSON.stringify(data));
+      loadSchedule();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      localStorage.removeItem('schedule');
+      scheduleForm.reset();
+      loadSchedule();
+    });
+
+    loadSchedule();
+
+    // ===== Notes =====
+    const noteInput = document.getElementById('noteInput');
+    const addNoteBtn = document.getElementById('addNote');
+    const notesList = document.getElementById('notesList');
+
+    function loadNotes() {
+      const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      notesList.innerHTML = notes.map((n,i) => `
+        <li>${n} <button class="delete-btn" onclick="deleteNote(${i})">Delete</button></li>
+      `).join('');
+    }
+
+    function deleteNote(i) {
+      const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      notes.splice(i,1);
+      localStorage.setItem('notes', JSON.stringify(notes));
+      loadNotes();
+    }
+
+    addNoteBtn.addEventListener('click', () => {
+      const val = noteInput.value.trim();
+      if(!val) return;
+      const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      notes.push(val);
+      localStorage.setItem('notes', JSON.stringify(notes));
+      noteInput.value = '';
+      loadNotes();
+    });
+
+    loadNotes();
+
+    // ===== To-Do List =====
+    const todoInput = document.getElementById('todoInput');
+    const addTodoBtn = document.getElementById('addTodo');
+    const todoList = document.getElementById('todoList');
+
+    function loadTodos() {
+      const todos = JSON.parse(localStorage.getItem('todos')) || [];
+      todoList.innerHTML = todos.map((t,i) => `
+        <li>${t} <button class="delete-btn" onclick="deleteTodo(${i})">Delete</button></li>
+      `).join('');
+    }
+
+    function deleteTodo(i) {
+      const todos = JSON.parse(localStorage.getItem('todos')) || [];
+      todos.splice(i,1);
+      localStorage.setItem('todos', JSON.stringify(todos));
+      loadTodos();
+    }
+
+    addTodoBtn.addEventListener('click', () => {
+      const val = todoInput.value.trim();
+      if(!val) return;
+      const todos = JSON.parse(localStorage.getItem('todos')) || [];
+      todos.push(val);
+      localStorage.setItem('todos', JSON.stringify(todos));
+      todoInput.value = '';
+      loadTodos();
+    });
+
+    loadTodos();
+  </script>
 </body>
 </html>
