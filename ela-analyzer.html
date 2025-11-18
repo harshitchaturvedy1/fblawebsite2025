@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ELA Essay Analyzer — HoloClass</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">HoloClass</a>
+      <nav class="main-nav">
+              <a href="index.html">Home</a>
+        <a href="resources.html">Resources</a>
+        <a href="schedule.html">Peer Tutoring</a>
+        <a href="holoclass.html">HoloClass</a>
+        <a href="ela-analyzer.html">ELA Analyzer</a>
+        <a href="dashboard.html">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <section class="section container">
+
+      <!-- Main Card -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <div class="card-icon">📝</div>
+          <div>
+            <h1>ELA Essay Analyzer</h1>
+            <p class="muted">Upload your essay to receive AI-powered feedback and scoring.</p>
+          </div>
+        </div>
+
+        <!-- Upload Box -->
+        <div id="uploadArea" class="upload-area link-item" style="cursor:pointer;">
+          <div class="link-emoji" style="font-size:48px;">📄</div>
+          <div>
+            <strong>Drop your file or click to upload</strong>
+            <br>
+            <small class="muted">Supports .doc, .docx, .txt, .pdf</small>
+          </div>
+        </div>
+
+        <input id="fileInput" type="file" accept=".doc,.docx,.txt,.pdf" hidden>
+
+        <!-- Selected File -->
+        <div id="uploadedFile" class="uploaded-file" style="display:none;">
+          <span class="link-emoji">📄</span>
+          <span id="fileName" style="flex:1;"></span>
+          <button id="removeBtn" class="btn ghost">Remove</button>
+        </div>
+
+        <!-- Analyze Button -->
+        <button id="analyzeBtn" class="btn primary" style="width:100%; margin-top:20px;" disabled>
+          Analyze Essay
+        </button>
+      </div>
+
+      <!-- RESULTS SECTION -->
+      <div id="analysisSection" style="display:none;">
+
+        <!-- Loading -->
+        <div id="loadingContainer" class="dashboard-card" style="text-align:center;">
+          <div class="loading-spinner" style="
+            width:40px; height:40px; 
+            border-radius:50%;
+            margin:20px auto;
+            border:4px solid #ddd;
+            border-top:4px solid #667eea;
+            animation: spin 1s linear infinite;">
+          </div>
+          <p class="muted">Analyzing your essay...</p>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsContainer" style="display:none;">
+
+          <!-- Score Card -->
+          <div class="dashboard-card" style="background:#667eea; color:white; text-align:center;">
+            <h2 style="margin:0;">Overall Score</h2>
+            <div style="font-size:52px; font-weight:700; margin:10px 0;">85/100</div>
+            <p>Strong work with room to grow</p>
+          </div>
+
+          <!-- Strengths -->
+          <div class="dashboard-card" style="border-left:4px solid #667eea;">
+            <h3>Strengths</h3>
+            <ul class="muted">
+              <li>Clear thesis and structured argument</li>
+              <li>Good transitions between ideas</li>
+              <li>Strong supporting evidence</li>
+            </ul>
+          </div>
+
+          <!-- Improvements -->
+          <div class="dashboard-card" style="border-left:4px solid #667eea;">
+            <h3>Areas for Improvement</h3>
+            <ul class="muted">
+              <li>Conclusion could reinforce the thesis better</li>
+              <li>Minor grammar and sentence flow issues</li>
+            </ul>
+          </div>
+
+          <!-- Suggestions -->
+          <div class="dashboard-card" style="border-left:4px solid #667eea;">
+            <h3>Suggestions</h3>
+            <ul class="muted">
+              <li>Add a counterargument section</li>
+              <li>Read aloud to catch awkward phrasing</li>
+            </ul>
+          </div>
+
+          <button id="newAnalysisBtn" class="btn ghost" style="margin-top:10px;">
+            Analyze Another Essay
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><strong>HoloClass Essay Analyzer</strong></div>
+      <div><small>Demo feedback only — not real grading</small></div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const uploadedFile = document.getElementById('uploadedFile');
+    const fileName = document.getElementById('fileName');
+    const removeBtn = document.getElementById('removeBtn');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const analysisSection = document.getElementById('analysisSection');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const newAnalysisBtn = document.getElementById('newAnalysisBtn');
+
+    let selectedFile = null;
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.style.opacity = 0.8; });
+    uploadArea.addEventListener('dragleave', () => uploadArea.style.opacity = 1);
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault();
+      handleFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener('change', e => {
+      if (e.target.files.length > 0) handleFile(e.target.files[0]);
+    });
+
+    removeBtn.addEventListener('click', () => {
+      selectedFile = null;
+      uploadedFile.style.display = 'none';
+      uploadArea.style.display = 'flex';
+      analyzeBtn.disabled = true;
+    });
+
+    function handleFile(file) {
+      selectedFile = file;
+      fileName.textContent = file.name;
+      uploadedFile.style.display = 'flex';
+      uploadArea.style.display = 'none';
+      analyzeBtn.disabled = false;
+    }
+
+    analyzeBtn.addEventListener('click', () => {
+      analysisSection.style.display = 'block';
+      loadingContainer.style.display = 'block';
+      resultsContainer.style.display = 'none';
+
+      setTimeout(() => {
+        loadingContainer.style.display = 'none';
+        resultsContainer.style.display = 'block';
+      }, 3500);
+    });
+
+    newAnalysisBtn.addEventListener('click', () => {
+      uploadedFile.style.display = 'none';
+      uploadArea.style.display = 'flex';
+      fileInput.value = '';
+      analyzeBtn.disabled = true;
+      analysisSection.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
