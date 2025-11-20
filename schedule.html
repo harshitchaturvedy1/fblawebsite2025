@@ -1,41 +1,44 @@
-    <!doctype html>
-    <html lang="en">
-    <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Peer Tutoring — Forsyth Central Highschool</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    </head>
-    <body class="theme-school">
-    <header class="site-header">
-        <div class="container header-inner">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Peer Tutoring — Forsyth Central Highschool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="theme-school">
+
+<header class="site-header">
+    <div class="container header-inner">
         <a class="logo" href="index.html">HoloClass</a>
         <nav class="main-nav">
-                <a href="index.html">Home</a>
+            <a href="index.html">Home</a>
             <a href="resources.html">Resources</a>
             <a href="schedule.html">Peer Tutoring</a>
             <a href="holoclass.html">HoloClass</a>
             <a href="ela-analyzer.html">ELA Analyzer</a>
             <a href="dashboard.html">Dashboard</a>
         </nav>
-        </div>
-    </header>
+    </div>
+</header>
 
-    <main>
-        <section class="section container">
-        <div class="school-hero">
-            <img class="school-logo" src="https://sportshub2-uploads.vnn-prod.zone/files/sites/420/2017/12/13143615/Official_FC.png" alt="Forsyth Central Highschool">
-            <div>
+<main>
+<section class="section container">
+
+    <div class="school-hero">
+        <img class="school-logo" src="https://sportshub2-uploads.vnn-prod.zone/files/sites/420/2017/12/13143615/Official_FC.png" alt="Forsyth Central Highschool">
+        <div>
             <h1>Peer Tutoring — Forsyth Central Highschool</h1>
             <p class="muted">Dawg Time tutoring is available during school hours. Learn from trained peer tutors, or sign up to help others.</p>
-            </div>
         </div>
+    </div>
 
-        <div class="tutoring-grid">
-            <div class="tutoring-card">
+    <div class="tutoring-grid">
+        <div class="tutoring-card">
             <div class="card-icon">📚</div>
             <h2>Get Tutoring</h2>
             <p>If you need tutoring during Dawg Time, register using the student request form below. A peer tutor will reach out with availability.</p>
@@ -44,15 +47,15 @@
             <div class="info-box">
                 <h3>How Dawg Time scheduling works</h3>
                 <ul>
-                <li>Students submit the request form with subject and preferred Dawg Time block.</li>
-                <li>Peer tutors mark availability and match is made.</li>
-                <li>Sessions can be 1-on-1 or small groups depending on demand.</li>
-                <li>Use the Dashboard to keep your schedule and notes organized.</li>
+                    <li>Students submit the request form with subject and preferred Dawg Time block.</li>
+                    <li>Peer tutors mark availability and match is made.</li>
+                    <li>Sessions can be 1-on-1 or small groups depending on demand.</li>
+                    <li>Use the Dashboard to keep your schedule and notes organized.</li>
                 </ul>
             </div>
-            </div>
+        </div>
 
-            <div class="tutoring-card">
+        <div class="tutoring-card">
             <div class="card-icon">🎓</div>
             <h2>Become a Peer Tutor</h2>
             <p>If you're interested in tutoring your peers, apply below. Training and guidelines provided by the counseling office.</p>
@@ -61,36 +64,80 @@
             <div class="info-box">
                 <h3>Tutor Expectations</h3>
                 <ul>
-                <li>Attend training and agree to school code of conduct</li>
-                <li>Be punctual for Dawg Time sessions</li>
-                <li>Provide supportive and patient help</li>
+                    <li>Attend training and agree to school code of conduct</li>
+                    <li>Be punctual for Dawg Time sessions</li>
+                    <li>Provide supportive and patient help</li>
                 </ul>
             </div>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- Dawg Time Schedule -->
+<section class="section container">
+    <h2>Dawg Time Schedule</h2>
+    <p class="muted">View available tutoring sessions throughout the week.</p>
+
+    <div class="calendar-mock">
+        <div class="calendar-header">
+            <div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div>
+        </div>
+        <div class="calendar-grid">
+            <div class="slot">Dawg Time</div>
+            <div class="slot">N/A</div>
+            <div class="slot">Dawg Time/ Wellness</div>
+            <div class="slot">N/A</div>
+            <div class="slot">Dawg Time</div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Study Buddy Finder -->
+<section class="section container">
+    <h2>Study Buddy Finder</h2>
+    <p class="muted">Simulate how it feels to get matched with a peer — no real accounts or networking involved.</p>
+
+    <button id="findBuddyBtn" class="btn primary">Find a Study Buddy</button>
+
+    <!-- Modal -->
+    <div id="buddyModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+
+            <div id="searchingState">
+                <h3>Searching for available peers...</h3>
+                <div class="spinner"></div>
+            </div>
+
+            <div id="resultState" class="hidden">
+                <h3>We found someone!</h3>
+                <div class="buddy-card">
+                    <div class="buddy-avatar">👤</div>
+                    <div>
+                        <p><strong>Name:</strong> <span id="buddyName"></span></p>
+                        <p><strong>Subject:</strong> <span id="buddySubject"></span></p>
+                        <p><strong>Availability:</strong> <span id="buddyTime"></span></p>
+                    </div>
+                </div>
+                <button id="connectBtn" class="btn primary">Connect</button>
+            </div>
+
+            <div id="finalState" class="hidden">
+                <h3>Message Sent!</h3>
+                <p>Your peer tutor will “respond” soon 🙂</p>
             </div>
         </div>
+    </div>
+</section>
 
-        <section class="section">
-            <h2>Dawg Time Schedule</h2>
-            <p class="muted">View available tutoring sessions throughout the week.</p>
-            <div class="calendar-mock">
-            <div class="calendar-header">
-                <div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div>
-            </div>
-            <div class="calendar-grid">
-                <div class="slot">Dawg Time</div>
-                <div class="slot">N/A</div>
-                <div class="slot">Dawg Time/ Wellness</div>
-                <div class="slot">N/A</div>
-                <div class="slot">Dawg Time</div>
-            </div>
-            </div>
-        </section>
 
-        </section>
-    </main>
+</main>
 
-    <footer class="site-footer">
-        <div class="container footer-grid">
+<footer class="site-footer">
+    <div class="container footer-grid">
         <div>
             <strong>Forsyth Central Highschool</strong>
             <p>Dawg Time — Peer Tutoring</p>
@@ -101,9 +148,79 @@
         <div>
             <small>Only the Peer Tutoring page is school-branded. Rest of site is neutral.</small>
         </div>
-        </div>
-    </footer>
+    </div>
+</footer>
 
-    <script src="assets/js/main.js"></script>
-    </body>
-    </html>
+
+<script src="assets/js/main.js"></script>
+
+<!-- Study Buddy Script + Animations -->
+<script>
+
+// Smooth state animations
+function animateState(el) {
+    el.style.opacity = 0;
+    el.style.transform = "translateY(12px)";
+    setTimeout(() => {
+        el.style.transition = "0.35s ease";
+        el.style.opacity = 1;
+        el.style.transform = "translateY(0)";
+    }, 30);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const findBtn = document.getElementById("findBuddyBtn");
+    const modal = document.getElementById("buddyModal");
+    const closeBtn = document.querySelector(".close-btn");
+
+    const searchingState = document.getElementById("searchingState");
+    const resultState = document.getElementById("resultState");
+    const finalState = document.getElementById("finalState");
+
+    const buddyName = document.getElementById("buddyName");
+    const buddySubject = document.getElementById("buddySubject");
+    const buddyTime = document.getElementById("buddyTime");
+
+    const connectBtn = document.getElementById("connectBtn");
+
+    const names = ["Alex R.", "Jordan T.", "Mia S.", "Noah K.", "Sophia L.", "Ethan P."];
+    const subjects = ["Algebra", "Biology", "Spanish I", "ELA", "Geometry", "Chemistry"];
+    const times = ["Dawg Time A", "Dawg Time B", "Wednesday Wellness", "Friday Dawg Time"];
+
+    // Open modal
+    findBtn.onclick = () => {
+        modal.classList.remove("hidden");
+
+        searchingState.classList.remove("hidden");
+        resultState.classList.add("hidden");
+        finalState.classList.add("hidden");
+
+        animateState(searchingState);
+
+        setTimeout(() => {
+            searchingState.classList.add("hidden");
+            resultState.classList.remove("hidden");
+
+            buddyName.textContent = names[Math.floor(Math.random()*names.length)];
+            buddySubject.textContent = subjects[Math.floor(Math.random()*subjects.length)];
+            buddyTime.textContent = times[Math.floor(Math.random()*times.length)];
+
+            animateState(resultState);
+        }, 2000);
+    };
+
+    // Close modal
+    closeBtn.onclick = () => modal.classList.add("hidden");
+
+    // Connect animation
+    connectBtn.onclick = () => {
+        resultState.classList.add("hidden");
+        finalState.classList.remove("hidden");
+        animateState(finalState);
+    };
+});
+</script>
+
+</body>
+</html>
