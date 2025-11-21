@@ -25,7 +25,7 @@
     <section class="section container">
       <div class="dashboard-header">
         <h1>Your Dashboard</h1>
-        <p class="muted">Quickly access links, track your schedule, take notes, and manage tasks.</p>
+        <p class="muted">Quickly access links, track your schedule, take notes, manage tasks, and track progress.</p>
       </div>
 
       <div class="dashboard-grid">
@@ -99,6 +99,27 @@
           <ul id="todoList" class="todo-list"></ul>
         </div>
 
+        <!-- Learning Progress -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <div class="card-icon">📊</div>
+            <h2>Learning Progress</h2>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-fill" id="learningProgress"></div>
+          </div>
+          <p id="progressText" class="muted">0% completed</p>
+        </div>
+
+        <!-- Daily Streak -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <div class="card-icon">🔥</div>
+            <h2>Daily Streak</h2>
+          </div>
+          <p id="streakCount" class="muted">0 days in a row</p>
+        </div>
+
       </div>
     </section>
   </main>
@@ -164,6 +185,7 @@
       notes.splice(i,1);
       localStorage.setItem('notes', JSON.stringify(notes));
       loadNotes();
+      updateProgress();
     }
 
     addNoteBtn.addEventListener('click', () => {
@@ -174,6 +196,7 @@
       localStorage.setItem('notes', JSON.stringify(notes));
       noteInput.value = '';
       loadNotes();
+      updateProgress();
     });
 
     loadNotes();
@@ -186,7 +209,7 @@
     function loadTodos() {
       const todos = JSON.parse(localStorage.getItem('todos')) || [];
       todoList.innerHTML = todos.map((t,i) => `
-        <li>${t} <button class="delete-btn" onclick="deleteTodo(${i})">Delete</button></li>
+        <li>${t.text || t} <button class="delete-btn" onclick="deleteTodo(${i})">Delete</button></li>
       `).join('');
     }
 
@@ -195,21 +218,55 @@
       todos.splice(i,1);
       localStorage.setItem('todos', JSON.stringify(todos));
       loadTodos();
+      updateProgress();
     }
 
     addTodoBtn.addEventListener('click', () => {
       const val = todoInput.value.trim();
       if(!val) return;
       const todos = JSON.parse(localStorage.getItem('todos')) || [];
-      todos.push(val);
+      todos.push({text: val, completed: false});
       localStorage.setItem('todos', JSON.stringify(todos));
       todoInput.value = '';
       loadTodos();
+      updateProgress();
     });
 
     loadTodos();
+
+    // ===== Learning Progress =====
+    function updateProgress() {
+      const todos = JSON.parse(localStorage.getItem('todos')) || [];
+      const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      const totalItems = todos.length + notes.length;
+      const completedItems = notes.length; // consider notes as completed
+      const percent = totalItems ? Math.round((completedItems / totalItems) * 100) : 0;
+      const progressFill = document.getElementById('learningProgress');
+      const progressText = document.getElementById('progressText');
+      progressFill.style.width = percent + '%';
+      progressText.textContent = percent + '% completed';
+    }
+
+    updateProgress();
+
+    // ===== Daily Streak =====
+    function updateStreak() {
+      const today = new Date().toDateString();
+      const lastVisit = localStorage.getItem('lastVisit');
+      let streak = parseInt(localStorage.getItem('streak')) || 0;
+      if(lastVisit !== today) {
+        if(lastVisit === new Date(Date.now() - 86400000).toDateString()) {
+          streak += 1;
+        } else {
+          streak = 1;
+        }
+        localStorage.setItem('streak', streak);
+        localStorage.setItem('lastVisit', today);
+      }
+      document.getElementById('streakCount').textContent = `${streak} day${streak===1?'':'s'} in a row`;
+    }
+
+    updateStreak();
   </script>
 </body>
 </html>
-
-
